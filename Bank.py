@@ -1,3 +1,15 @@
+'''INPUT:
+pulsar
+10
+Red
+
+output:
+black
+0
+Red
+10.0'''
+
+
 class Bike:
     def __init__(self, model_name, acceleration):
         self.model_name = model_name

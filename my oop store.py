@@ -290,4 +290,169 @@ Should raise a ValueError incase of invalid input.
 >>> query = Query(field="name", operation="random", value="Oreo Biscuits")  
 ValueError: Invalid value for operation, got random  
 
-Back
+#upto question
+
+
+
+
+
+
+
+
+
+class Item:
+    def __init__(self,name=None,price=0,category=None):
+        if price<=0:
+            raise ValueError("Invalid value for price, got {}".format(price))
+        self.name=name
+        self.price=price
+        self.category=category
+    def __str__(self):
+        return "{}@{}-{}".format(self.name,self.price,self.category)
+class Query:
+    def __init__(self,field,operation,value):
+        op=['IN','EQ','GT','GTE','LT','LTE','STARTS_WITH','ENDS_WITH','CONTAINS']
+        if operation not in op:
+            raise ValueError('Invalid value for operation, got {}'.format(operation))
+        self.field=field
+        self.operation=operation
+        self.value=value
+    def __str__(self):
+        return "{} {} {}".format(self.field,self.operation,self.value)
+          
+class Store:
+    def __init__(self):
+        self.list1=[]
+    def add_item(self,item):
+        self.list1.append(item)
+    def count(self):
+        return len(self.list1)
+    def __str__(self):
+        if len(self.list1)>0:
+            return "\n".join(map(str,self.list1))
+        else:
+            return 'No items'
+    def filter(self,query):
+        list2=Store()
+        if query.operation=='EQ':
+            for i in self.list1:
+                if query.value==i.name:
+                    list2.add_item((i))
+                elif query.value==i.price:
+                    list2.add_item((i))
+                elif query.value==i.category:
+                    list2.add_item((i))
+            return list2
+        if query.operation=='GT':
+            for i in self.list1:
+                if i.price>query.value:
+                    list2.add_item((i))
+            return list2
+        if query.operation=='GTE':
+            for i in self.list1:
+                if i.price>=query.value:
+                    list2.add_item((i))
+            return list2
+        if query.operation=='LT':
+            for i in self.list1:
+                if i.price<query.value:
+                    list2.add_item((i))
+            return list2
+        if query.operation=='LTE':
+            for i in self.list1:
+                if i.price<=query.value:
+                    list2.add_item((i))
+            return list2
+        if query.operation=='STARTS_WITH':
+            for i in self.list1:
+                if i.name.startswith(query.value):
+                    list2.add_item((i))
+                if i.category.startswith(query.value):
+                    list2.add_item((i))
+            return list2
+        if query.operation=='ENDS_WITH':
+            for i in self.list1:
+                if i.name.endswith(query.value):
+                    list2.add_item((i))
+                if i.category.endswith(query.value):
+                    list2.add_item((i))
+            return list2
+        
+        if query.operation=='CONTAINS':
+            for i in self.list1:
+                if query.field == 'name' and i.name.__contains__(query.value):
+                            list2.add_item((i))
+                if query.field=='category' and i.category.__contains__(query.value):
+                            list2.add_item((i))
+            return list2
+            
+        if query.operation=='IN':
+            for i in self.list1:
+                if i.name in query.value:
+                    list2.add_item((i))
+                elif i.price in query.value:
+                    list2.add_item((i))
+                elif i.category in query.value:
+                    list2.add_item((i))
+            return list2
+    def exclude(self,query):
+        obj2=Store() 
+        if query.operation=='EQ':
+            for i in self.list1:
+                if query.value!=i.name and query.value!=i.price and query.value!=i.category:
+                    obj2.add_item(i)
+            return obj2
+        if query.operation=='GT':
+            for i in self.list1:
+                if query.value>=i.price:
+                    obj2.add_item(i)
+            return obj2
+        if query.operation=='GTE':
+            for i in self.list1:
+                if query.value>i.price:
+                    obj2.add_item(i)
+            return obj2
+        if query.operation=='LT':
+            for i in self.list1:
+                if query.value<=i.price:
+                    obj2.add_item(i)
+            return obj2
+        if query.operation=='LTE':
+            for i in self.list1:
+                if query.value<i.price:
+                    obj2.add_item(i)
+            return obj2
+        if query.operation=='STARTS_WITH':
+            for i in self.list1:
+                if i.name.startswith(query.value) or i.category.startswith(query.value):
+                    pass
+                else:
+                    obj2.add_item(i)
+            return obj2
+        if query.operation=='ENDS_WITH':
+            for i in self.list1:
+                if i.name.endswith(query.value) or i.category.endswith(query.value):
+                    pass
+                else:
+                    obj2.add_item((i))
+            return obj2
+        if query.operation=='CONTAINS':
+            for i in self.list1:
+                if query.field == 'name' and i.name.__contains__(query.value):
+                    pass
+                elif query.field=='category' and i.category.__contains__(query.value):
+                    pass
+                else:
+                    obj2.add_item((i))
+            return obj2
+        if query.operation=='IN':
+            for i in self.list1:
+                if i.name in query.value:
+                    pass
+                elif i.price in query.value:
+                    pass
+                elif i.category in query.value:
+                    pass
+                else:
+                    obj2.add_item((i))
+            return obj2
